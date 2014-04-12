@@ -4,81 +4,67 @@
 #include "common.h"
 #include <cstdio>
 
-// size in elements aligned
+// RAII storage type aligned file chunk 
+// create from buffer and reading only one time
 
-template <typename T, size_t elements>
+template <typename T, size_t elements> 
 class chunk
 {
 public: 
-
     using data_t = std::vector<T> &;
+    using getter = std::pair<bool, T>;
 
-    chunk(const std::string &tag, data_t data) :
+    chunk(data_t data) :
         size(elements * sizeof(T)),
-        tag(tag),
-        out(tag, std::ios::out | std::ios::binary),
-        in(tag,  std::ios::in  | std::ios::binary),
+        tag(".chunk#" + std::to_string(next::natural<uint64_t>())),
         data(data)
     {
+        out.open(tag, std::ios::out | std::ios::binary);
         if(!out)  
+            throw std::runtime_error("[chunk] can't create file " + tag);
+        out.write(reinterpret_cast<char *>(&data[0]),size);
+        out.close();
+        in.open(tag, std::ios::in | std::ios::binary);
+        if(!in)  
             throw std::runtime_error("[chunk] can't open file " + tag);
-    }
+    } 
+   
     ~chunk()    
     {
         in.close();
-        out.close();
         if(std::remove(tag.c_str()) != 0)
             throw std::runtime_error("[chunk] can't delete file " + tag);
-            
-
-    }
-    void flush()
-    {
-        out.write(reinterpret_cast<char *>(&data[0]),size);
-        out.flush();
-    }
-    void read()
-    {
-        data.resize(size);
-        in.seekg(0);
-        in.read(reinterpret_cast<char *>(&data[0]), size);
     }
     
-    T get() const 
+    T    get()  const {return value;}
+    bool pop()
     {
-        return value;
-    }
-    void next()   
-    {
-
         in.read(reinterpret_cast<char *>(&value),sizeof(T));
+        return in.eof(); 
     }
+
 
 #ifdef UNIT_TEST
     static bool test()
     {
-        bool passed = true;
-        auto buff = createRandomChunk<T,elements>();
-        
-        chunk<T, elements> ch1("ch1.dat",buff);
-        chunk<T, elements> ch2("ch2.dat",buff);
-        
-        ch1.flush();
-        ch2.flush();
+        auto buff = createBuffer<T,elements>(next::random<int32_t>);
+        chunk<T, elements> ch1(buff);
+        chunk<T, elements> ch2(buff);
 
-
-
-        return passed; 
+        while(!ch1.pop() && !ch2.pop())
+            if(ch1.get() != ch2.get()) return false;
+        return true; 
     }     
 #endif
 
 private:
-    size_t        size;
-    std::string   tag;
-    std::ofstream out;
-    std::ifstream in;
-    data_t        data;
-    T             value;
+    static size_t uid ;    // unique chunk id    
+    size_t        size;    // size in bytes
+    std::string   tag;     // filename
+    std::ofstream out;     // write stream
+    std::ifstream in;      // read stream 
+    data_t        data;    // buffer[size]
+    T             value;   // curent value
 };
    
 

@@ -1,7 +1,7 @@
-CXX=g++
+CXX=clang++
 
-C_FLAGS=-c -Wall -Wextra -pedantic -std=c++11 -I/usr/local/include -O3  -DUNIT_TEST
-L_FLAGS=-L/usr/local/lib 
+C_FLAGS=-c -Wall -Wextra -pedantic -std=c++11  -O3  -DUNIT_TEST
+L_FLAGS=
 
 TARGET=./test
 SOURCES=main.cpp 
