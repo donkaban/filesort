@@ -53,8 +53,9 @@ namespace next
 template <typename T> 
 void createFile(const std::string &tag, size_t cap,const std::function<T()> &next)
 {
-	std::ofstream stream(tag, std::ios::out | std::ios::binary);
 	std::cout << "[create] " << tag <<"; capacity: " << cap << "; size: " << B2M(cap * sizeof(T)) << " Mb" << std::flush;
+
+    std::ofstream stream(tag, std::ios::out | std::ios::binary);
     for(auto i = 0u; i< cap; i++)
     {	
     	T val = next();
@@ -62,6 +63,27 @@ void createFile(const std::string &tag, size_t cap,const std::function<T()> &nex
     }
     stream.close();
 }
+
+template <typename T>
+void checkFile(const std::string &tag, const std::function<bool(T &, T &)> predicat)
+{
+    std::cout << "[check] "<< tag << std::flush;
+
+    T val, cur;
+    std::ifstream in(tag, std::ios::in | std::ios::binary);
+    if(!in)  
+        throw std::runtime_error("[checkFile] can't open file " + tag);
+    in.read(reinterpret_cast<char *>(&val),sizeof(T));
+    while(!in.eof())
+    {
+        in.read(reinterpret_cast<char *>(&cur),sizeof(T));
+        if(val!=cur and !predicat(val,cur))
+            throw std::runtime_error("[checkFile] bad result in file " + tag);
+        val=cur;    
+    }   
+    std::cout << " ok!"; 
+}
+
 
 
 

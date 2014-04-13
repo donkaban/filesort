@@ -20,6 +20,8 @@ $(TARGET): $(OBJECTS) $(HEADERS)  Makefile
 clean:
 	rm -f $(TARGET)
 	rm -f $(OBJECTS)
-	rm -f *.bin*
+	rm -f *.bin
+	rm -f *.result
+	
 	
 	

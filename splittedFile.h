@@ -15,8 +15,9 @@ public:
     using buff_t     = std::vector<T>;
     using predicat_t = std::function<bool(T &, T &)>; 
 
-    splittedFile(const std::string &tag, const predicat_t &predicat) :
+    splittedFile(const std::string &tag,const std::string &outtag, const predicat_t &predicat) :
         tag(tag),
+        outtag(outtag),
         infile(tag, std::ios::in | std::ios::binary),
         predicat(predicat)
     {
@@ -38,13 +39,12 @@ public:
         std::cout << "[split] limit: "<< B2M(limit*sizeof(T)) << "Mb  ch: " << numFullChunks << " remain: " << remainSize << std::flush;
         for(auto i = 0u; i< numFullChunks; i++)
             addChunk();
-        // if(remainSize > 0)
-        //     addChunk(remainSize);
+        if(remainSize > 0)
+            addChunk(remainSize);
 
     }
     virtual void merge()
     {
-        auto outtag = tag + ".processed";
         std::cout << "[merge] limit: "<< B2M(limit*sizeof(T)) << "Mb  ch: " << numFullChunks << " remain: " << remainSize << std::flush;
         std::ofstream out(outtag, std::ios::out | std::ios::binary);
         if(!out)  
@@ -58,7 +58,8 @@ public:
     }
 
 private:
-    std::string tag;                // filename
+    std::string tag;                // in filename
+    std::string outtag;             // out filename
     std::ifstream infile;           // file stream  
     size_t filesize = 0;            // file size     
     size_t capacity = 0;            // type aligned file size 
