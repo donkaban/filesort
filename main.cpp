@@ -1,28 +1,28 @@
 #include "common.h"
 #include "chunk.h"
+#include "splittedFile.h"
 
-using        DATA_TYPE = int32_t;                       // Storage data type - signed int, 32 bit  
-const size_t MEM_LIMIT = M2B(10);                       // 10Mb - memory limit for buffering
-const size_t LIMIT     = MEM_LIMIT/sizeof(DATA_TYPE);   // type aligned limit size
+using      DATA_TYPE = int32_t;                     // Storage data type  
+const auto MEM_LIMIT = M2B(10);                     // memory limit for buffering
+const auto LIMIT     = MEM_LIMIT/sizeof(DATA_TYPE); // type aligned limit size
+
+// RAM : stl sort -> O(N*log(N))
 
 int main()
 {
     try
     {
-        #ifdef UNIT_TEST
-            std::cout << "chunk test : " << std::boolalpha << chunk<DATA_TYPE,100>::test() << std::endl;
-          
+        trace(createFile<DATA_TYPE>,"test.bin", LIMIT * 50 , next::random<DATA_TYPE>);
 
-        #endif
+        splittedFile<DATA_TYPE, LIMIT> mergeSort("test.bin",std::greater<DATA_TYPE>());
+            trace([&]{mergeSort.split();});
+            trace([&]{mergeSort.merge();});
 
-        trace(createFile<DATA_TYPE>,"test.bin", LIMIT * 30,next::random<DATA_TYPE>);
     
-      
-
     }
     catch(const std::exception &e)
     {
-        std::cout << "fatal error: " << e.what() << std::endl;
+        std::cout << "\nerror: " << e.what() << std::endl;
     }
 
     return 0;

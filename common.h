@@ -9,6 +9,7 @@
 #include <fstream>
 #include <limits> 
 #include <random>
+#include <algorithm>
 
 
 // ONLY FOR TESTING. ANY OPTIMIZATION HERE IS THE ROOT OF ALL EVIL
@@ -49,26 +50,15 @@ namespace next
     }
 }
 
-template <typename T, size_t elements>
-std::vector<T> createBuffer(const std::function<T()> &next)
-{
-    std::vector<T> res;
-    res.reserve(elements);
-    for(auto i = 0u; i < elements; i++)
-        res.push_back(next());
-    return res;
-}
-
 template <typename T> 
-void createFile(const std::string &tag, size_t elements,const std::function<T()> &next)
+void createFile(const std::string &tag, size_t cap,const std::function<T()> &next)
 {
 	std::ofstream stream(tag, std::ios::out | std::ios::binary);
-	std::cout << "create " << tag <<"; el: " << elements << "; size: " << B2M(elements * sizeof(T)) << " Mb" << std::flush;
-    for(auto i = 0u; i< elements; i++)
+	std::cout << "[create] " << tag <<"; capacity: " << cap << "; size: " << B2M(cap * sizeof(T)) << " Mb" << std::flush;
+    for(auto i = 0u; i< cap; i++)
     {	
     	T val = next();
         stream.write(reinterpret_cast<char *>(&val), sizeof(T));
-    	
     }
     stream.close();
 }
