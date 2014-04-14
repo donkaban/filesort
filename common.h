@@ -6,10 +6,11 @@
 #include <vector>
 #include <chrono>
 #include <functional>
+#include <algorithm>
 #include <fstream>
 #include <limits> 
 #include <random>
-#include <algorithm>
+
 
 
 // ONLY FOR TESTING. ANY OPTIMIZATION HERE IS THE ROOT OF ALL EVIL

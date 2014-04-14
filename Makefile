@@ -21,7 +21,7 @@ clean:
 	rm -f $(TARGET)
 	rm -f $(OBJECTS)
 	rm -f *.bin
-	rm -f *.result
+	rm -f *.result*
 	
 	
 	

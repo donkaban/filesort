@@ -36,7 +36,7 @@ public:
 
     virtual void split()
     {
-        std::cout << "[split] limit: "<< B2M(limit*sizeof(T)) << "Mb  ch: " << numFullChunks << " remain: " << remainSize << std::flush;
+        std::cout << "[split] limit: "<< B2M(limit*sizeof(T)) << "Mb ch: " << numFullChunks << " remain: " << B2M(remainSize) << "Mb" << std::flush;
         for(auto i = 0u; i< numFullChunks; i++)
             addChunk();
         if(remainSize > 0)
@@ -45,7 +45,7 @@ public:
     }
     virtual void merge()
     {
-        std::cout << "[merge] limit: "<< B2M(limit*sizeof(T)) << "Mb  ch: " << numFullChunks << " remain: " << remainSize << std::flush;
+        std::cout << "[merge] limit: "<< B2M(limit*sizeof(T)) << "Mb ch: " << numFullChunks << " remain: " << B2M(remainSize) << "Mb" << std::flush;
         std::ofstream out(outtag, std::ios::out | std::ios::binary);
         if(!out)  
             throw std::runtime_error("[splittedFile] can't create file " + outtag);
