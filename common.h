@@ -66,7 +66,7 @@ void createFile(const std::string &tag, size_t cap,const std::function<T()> &nex
 }
 
 template <typename T>
-void checkFile(const std::string &tag, const std::function<bool(T &, T &)> predicat)
+void checkFile(const std::string &tag, const std::function<bool(T,T)> &predicat)
 {
     std::cout << "[check] "<< tag << std::flush;
 
