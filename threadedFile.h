@@ -11,7 +11,7 @@ template<typename T, size_t limit>
 class threadedFile : public splittedFile<T,limit>
 {
 public:
-	using predicat_t = std::function<bool(T &, T &)>; 
+	using predicat_t = std::function<bool(T,T)>; 
    
    	threadedFile(const std::string &tag,const std::string &outtag, const predicat_t &predicat) :
    		splittedFile<T, limit>(tag,outtag,predicat)

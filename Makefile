@@ -1,6 +1,6 @@
-CXX=clang++
+CXX=g++
 
-C_FLAGS=-c -Wall -Wextra -pedantic -std=c++11  -O3 
+C_FLAGS=-c -Wall -Wextra -pedantic -std=c++11 -O3 
 
 TARGET=./test
 SOURCES=main.cpp 

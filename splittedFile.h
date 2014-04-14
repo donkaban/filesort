@@ -13,7 +13,7 @@ class splittedFile
 public:
     
     using buff_t     = std::vector<T>;
-    using predicat_t = std::function<bool(T &, T &)>; 
+    using predicat_t = std::function<bool(T,T)>; 
 
     splittedFile(const std::string &tag,const std::string &outtag, const predicat_t &predicat) :
         tag(tag),

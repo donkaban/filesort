@@ -1,7 +1,11 @@
 filesort
 ========
-
 c++ file merge sort test
+
+-- gcc 4.7 or newer
+-- clang 3.2 or newer
+-- tested on macOS (64bit) 10.9.2 with clang 3.3 and ubuntu (32bit) 12.04 with gcc 4.7.2
+
 
 test results :
 -----------------
@@ -17,5 +21,4 @@ test results :
     [merge] limit: 100Mb ch: 10 remain: 6Mb -> 22.9036 sec.
     [check] test.result3 ok! -> 6.87742 sec.
 
-NB: multithreaded ops not implemented yet
------------------------------------------
+NB: multithreaded ops and windows builds not implemented yet
