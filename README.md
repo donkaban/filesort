@@ -2,9 +2,9 @@ filesort
 ========
 c++ file merge sort test
 
--- gcc 4.7 or newer
--- clang 3.2 or newer
--- tested on macOS (64bit) 10.9.2 with clang 3.3 and ubuntu (32bit) 12.04 with gcc 4.7.2
+-gcc 4.7 or newer
+-clang 3.2 or newer
+-tested on macOS (64bit) 10.9.2 with clang 3.3 and ubuntu (32bit) 12.04 with gcc 4.7.2
 
 
 test results :
