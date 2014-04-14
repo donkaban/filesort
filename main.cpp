@@ -7,7 +7,7 @@ const auto MEM_LIMIT = M2B(25);                     // memory limit for bufferin
 const auto LIMIT     = MEM_LIMIT/sizeof(DATA_TYPE); // type aligned limit size
 const auto PREDICAT  = std::greater<DATA_TYPE>();   // sorting predicat
 
-// O(N*log(N))
+// O(N*log(N)) + filesize x2 
 
 int main()
 {
